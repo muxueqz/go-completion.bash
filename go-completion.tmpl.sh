@@ -31,7 +31,7 @@ go_complete_update() {
 _go_complete() {
   local -A _go_flags
   local _go_test_flags="-bench -benchmem -benchtime -blockprofile -blockprofilerate -cover -covermode -coverpkg -coverprofile -cpu -cpuprofile -memprofile -memprofilerate -outputdir -parallel -run -short -timeout -v"
-  local _go_build_flags="-n -trimpath -mod -modcacherw -a -compiler -modfile -race -v -p -ldflags -x -asmflags -toolexec -work -pkgdir -installsuffix -gcflags -tags -overlay -buildmode -gccgoflags -msan -linkshared"
+  local _go_build_flags="${COMPLETION_BUILD_FLAGS}"
 
   local cmd="${COMP_WORDS[0]}"
   local sub="${COMP_WORDS[1]}"
@@ -41,7 +41,7 @@ _go_complete() {
   local cand=""
   case "$prev" in
     go|goapp)
-      cand="version vet run clean get doc fix fmt list generate install tool build env test bug mod"
+      cand="${COMPLETION_CMDS}"
       if [ "$cmd" = "goapp" ]; then
         cand="$cand serve deploy"
       fi

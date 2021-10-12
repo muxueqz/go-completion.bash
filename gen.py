@@ -5,8 +5,11 @@ import subprocess
 result = subprocess.check_output('go help', shell=True)
 
 completes = {}
+help_topics = {}
+
 def get_help():
     start = False
+    results = completes
 
     for line in result.split('\n'):
         if 'The commands are:' in line:
@@ -14,10 +17,17 @@ def get_help():
             continue
         elif 'Use "go help <command>"' in line:
             start = False
+
+        if 'Additional help topics:' in line:
+            start = True
+            results = help_topics
+            continue
+        elif 'Use "go help <topic>"' in line:
+            start = False
         if start:
             r = line.split()
             try:
-                completes[r[0]] = set()
+                results[r[0]] = set()
             except:pass
 
 def get_cmd_help(cmd):
@@ -39,6 +49,7 @@ for k in completes:
 config = {}
 
 config['COMPLETION_CMDS'] = ' '.join(completes.keys())
+config['COMPLETION_HELP_TOPICS'] = ' '.join(help_topics.keys())
 
 flag_template = '''
   local _go_%s_flags="%s"

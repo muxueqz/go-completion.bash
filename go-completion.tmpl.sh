@@ -41,13 +41,13 @@ _go_complete() {
   local cand=""
   case "$prev" in
     go|goapp)
-      cand="${COMPLETION_CMDS}"
+      cand="${COMPLETION_CMDS} help"
       if [ "$cmd" = "goapp" ]; then
         cand="$cand serve deploy"
       fi
       ;;
     help)
-      cand="build clean env fix fmt generate get install list run test tool version vet c filetype gopath importpath packages testflag testfunc"
+      cand="${COMPLETION_HELP_TOPICS}"
       if [ "$cmd" = "goapp" ]; then
         cand="$cand serve deploy"
       fi

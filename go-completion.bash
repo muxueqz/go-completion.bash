@@ -41,13 +41,13 @@ _go_complete() {
   local cand=""
   case "$prev" in
     go|goapp)
-      cand="version vet run clean get doc fix fmt list generate install tool build env test bug mod"
+      cand="version vet run clean get doc fix fmt list generate install tool build env test bug mod help"
       if [ "$cmd" = "goapp" ]; then
         cand="$cand serve deploy"
       fi
       ;;
     help)
-      cand="build clean env fix fmt generate get install list run test tool version vet c filetype gopath importpath packages testflag testfunc"
+      cand="gopath c gopath-get buildmode goproxy filetype cache modules testflag private environment module-auth buildconstraint vcs module-get go.mod packages importpath testfunc"
       if [ "$cmd" = "goapp" ]; then
         cand="$cand serve deploy"
       fi

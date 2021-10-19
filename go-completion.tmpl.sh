@@ -31,7 +31,8 @@ go_complete_update() {
 _go_complete() {
   local -A _go_flags
   local _go_test_flags="-bench -benchmem -benchtime -blockprofile -blockprofilerate -cover -covermode -coverpkg -coverprofile -cpu -cpuprofile -memprofile -memprofilerate -outputdir -parallel -run -short -timeout -v"
-  local _go_build_flags="${COMPLETION_BUILD_FLAGS}"
+  # local _go_build_flags="${COMPLETION_BUILD_FLAGS}"
+  ${COMPLETION_FLAGS}
 
   local cmd="${COMP_WORDS[0]}"
   local sub="${COMP_WORDS[1]}"
@@ -57,6 +58,7 @@ _go_complete() {
         -*)
           case "$sub" in
             build)    cand="-o -i ${_go_build_flags}" ;;
+            mod)    cand="${_go_mod_flags}" ;;
             clean)    cand="-i -r -n -x ${_go_build_flags}" ;;
             fmt)      cand="-n -x" ;;
             generate) cand="-run" ;;
@@ -71,6 +73,10 @@ _go_complete() {
             deploy)   cand="-application -version -oauth" ;;
           esac
           ;;
+        *)
+          case "$sub" in
+            mod)    cand="${_go_mod_flags}" ;;
+          esac
       esac
       ;;
   esac

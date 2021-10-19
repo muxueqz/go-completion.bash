@@ -35,7 +35,18 @@ def get_cmd_help(cmd):
     result = subprocess.check_output(['go', 'help', cmd])
 
     for line in result.split('\n'):
-        if line.startswith('\t-'):
+        if 'The commands are:' in line:
+            start = True
+            continue
+        elif line.startswith('Use "go help'):
+            start = False
+        if start:
+            if line.startswith('\t'):
+                r = line.split()
+                try:
+                    completes[cmd].add(r[0])
+                except:pass
+        elif line.startswith('\t-'):
             r = line.split()
             try:
                 completes[cmd].add(r[0])
@@ -54,9 +65,12 @@ config['COMPLETION_HELP_TOPICS'] = ' '.join(help_topics.keys())
 flag_template = '''
   local _go_%s_flags="%s"
 '''
-k = 'build'
-v = completes[k]
-config['COMPLETION_BUILD_FLAGS'] = ' '.join(v)
+
+config['COMPLETION_FLAGS'] = ''
+for k in 'build mod'.split(' '):
+    v = completes[k]
+    # config['COMPLETION_BUILD_FLAGS'] = ' '.join(v)
+    config['COMPLETION_FLAGS'] += flag_template % (k, ' '.join(v))
 
 with open('./go-completion.tmpl.sh', 'r') as _fd:
     template_content = _fd.read()
